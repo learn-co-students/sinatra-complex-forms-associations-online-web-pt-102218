@@ -45,6 +45,7 @@ describe "Pets Controller" do
       fill_in "pet_name", :with => "Pippa"
       fill_in "owner_name", :with => "Mary Nelson"
       click_button "Create Pet"
+      # binding.pry
       @owner = Owner.last
       @pet = Pet.last
       expect(@pet.name).to eq("Pippa")
@@ -69,8 +70,8 @@ describe "Pets Controller" do
       @pet = Pet.create(:name => "Chewie", :owner_id => @owner.id)
     end
 
-    it "can visit '/owners/:id/edit' " do
-      get "/owners/#{@owner.id}/edit"
+    it "can visit '/pets/:id/edit' " do
+      get "/pets/#{@pet.id}/edit"
       expect(last_response.status).to eq(200)
     end
 
