@@ -5,12 +5,22 @@ class OwnersController < ApplicationController
     erb :'/owners/index' 
   end
 
-  get '/owners/new' do 
+  get '/owners/new' do
+    @pets = Pet.all
     erb :'/owners/new'
   end
 
   post '/owners' do 
+    @owner = Owner.create(params[:owner])
     
+    if !params["pet"]["name"].empty?
+    @owner.pets << Pet.create(name: params["pet"]["name"])
+    
+    #verifys that user fills out the form field 
+    #shovel method will automatically update SQl w/o save or updated called 
+  end
+    
+    redirect "owners/#{@owner.id}"
   end
 
   get '/owners/:id/edit' do 
@@ -23,7 +33,15 @@ class OwnersController < ApplicationController
     erb :'/owners/show'
   end
 
-  patch '/owners/:id' do 
-   
+  post '/owners/:id' do 
+    @owner = Owner.find(params[:id])
+    @owner.update(params["owner"])
+    if !params["pet"]["name"].empty?
+      @owner.pets << Pet.create(name: params["pet"]["name"])
+    end
+    redirect to "owners/#{@owner.id}"
   end
+
+   
 end
+
